@@ -47,6 +47,61 @@ To write your output to a file:
 
     interpreter.interpret(output_location='/i/cant/think/of/interesting/directory/names.txt')
     
+    
+    
+# Docs / How To Use
+
+### Step 0: Import the module
+
+If you can't do this why are you on this repo
+
+    import BRAINPyCK as bfpy
+
+### Step 1: Create an interpreter object
+
+Do you know how to make objects? God, I sure hope so.
+
+    interpreter = bfpy.interpreter(*code_goes_here*)
+
+### Step 2: Run it
+
+There's many options to running your code. Read through the Features section first to get a grip.
+
+#### Arguments
+
+##### predef_input
+
+Determines where to get input from.
+
+Default: None
+
+type: list/tuple
+
+example:
+
+    interpreter.interpret(predef_input=[88, 87, 86, 85, 87, 92])
+    
+##### output_location
+
+Determines where to output all '.' commands
+
+Default: 'print'
+
+type: str
+
+###### options
+
+'self': Outputted to interpreter.out
+
+filepath: Writes to file (file must be accessable)
+
+### Step 3: ???
+
+### Step 4: Profit!
+
+#### You now have an output! How wonderful is that?
+
+
 # FAQs
 
 ### Why is your code so messy?
