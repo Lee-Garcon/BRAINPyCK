@@ -114,6 +114,14 @@ class interpreter:
 					print(chr(self.memory[pointer]))
 				elif output_location == 'self':
 					self.out.append(chr(self.memory[pointer]))
+				
+				else:
+					try:
+						with open(output_location, 'a') as f:
+							f.write(chr(self.memory[pointer]))
+					except:
+						output_location == 'self'
+						self.out.append(chr(self.memory[pointer]))
 
 			elif code[idx] == ',':
 				if predef_input != None:
