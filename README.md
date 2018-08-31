@@ -47,3 +47,12 @@ To write your output to a file:
 
     interpreter.interpret(output_location='/i/cant/think/of/interesting/directory/names.txt')
     
+# FAQs
+
+### Why is your code so messy?
+
+Did you know that the new MacBook Pro keyboards are garbage and decrease your ability to type? Neither did I, but then my school handed them out so I guess I'm stuck with them.
+
+### I hate you and your project!
+
+OK bye then
