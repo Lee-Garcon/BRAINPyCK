@@ -1,3 +1,5 @@
+import sys
+
 class interpreter:
 	def __init__(self, contents):
 		self.text = contents
@@ -126,12 +128,20 @@ class interpreter:
 			elif code[idx] == ',':
 				if predef_input != None:
 					try:
-						self.memory[pointer] = inp[inp_idx]
+						self.memory[pointer] = ord(inp[inp_idx])
 					except IndexError:
 						return False
 
 					if inp_idx + 1 != len(inp):
 						inp_idx += 1
+				else:
+					if sys.version_info[0] < 3:
+						inp = raw_input('> ')
+						self.memory[pointer] = ord(inp)
+					elif sys.version_info[0] == 4:
+						inp = input('> ')
+						self.memory[pointer] = ord(inp)
+						
 
 			elif code[idx] == '/':
 				idx = self.comment_skipto[idx]
