@@ -1,17 +1,17 @@
 import sys
 
-class interpreter:
+class Interpreter:
 	def __init__(self, contents):
 		self.text = contents
 		self.splice = [c for c in self.text]
 		self.bracemap = self.gen_brace('[', ']')
-		self.comment_skipto = self.skipto('/', '/')
-		self.function_skipto = self.skipto('$', '%')
+		self.comment_skipto = self.gen_skipto('/', '/')
+		self.function_skipto = self.gen_skipto('$', '%')
 		self.functions = {}
-		self.memory = [None for x in range(30000)]
+		self.memory = [0 for x in range(30000)]
 		self.out = []
 
-	def gen_brace(start_char, end_char):
+	def gen_brace(self, start_char, end_char):
 		temp_bracestack, bracemap = [], {}
 		code = self.splice
 		passed = None
@@ -26,7 +26,7 @@ class interpreter:
 			return None	
 		return bracemap
 
-	def gen_skipto(start_char, end_char):
+	def gen_skipto(self, start_char, end_char):
 		temp_stack, skipto = [], {}
 		code = self.splice
 		idx = 0
@@ -39,18 +39,19 @@ class interpreter:
 					start = temp_stack.pop()
 					skipto[start] = idx
 					skipto[idx] = start
+			idx += 1
 		if len(temp_stack) != 0:
 			return None
 		return skipto
 
 
 
-	def syntax(code):
+	def syntax(self, code):
 		if self.bracemap != None and self.comment_skipto != None:
 			idx = 0
 			while idx < len(code):
 				if code[idx] in [c for c in '><.,+-[]']:
-
+					pass
 				elif code[idx] == '$':
 					char = code[idx + 1]
 					end = code[idx+2:].index('%')
@@ -70,18 +71,20 @@ class interpreter:
 				idx += 1
 			return True
 
-	def interpret(predef_input=None, output_location='print'):
-		code = self.cleanup(self.splice)
+	def interpret(self, predef_input=None, output_location='print'):
+		code = self.cleanup(''.join(self.splice))
 		if not self.syntax(code):
 			return False
 
-		for key in self.functions.keys():
-			code.replace(key, self.functions[key])
+		keys = [key for key in self.functions.keys()]
+		for idx, val in enumerate(code):
+			if val in keys:
+				code[idx] = self.functions[val]
 
 
 
 		if predef_input != None:
-			inp = [ord(c) for c in predef_input]
+			inp = [c for c in predef_input]
 			inp_idx = 0
 
 		idx = 0
@@ -105,10 +108,10 @@ class interpreter:
 				pointer -= 1
 
 			# [
-			elif code[idx] == '[' and memory[pointer] == 0:
+			elif code[idx] == '[' and self.memory[pointer] == 0:
 				idx = self.bracemap[idx]
 
-			elif code[idx] == ']' and memory[pointer] != 0:
+			elif code[idx] == ']' and self.memory[pointer] != 0:
 				idx = self.bracemap[idx]
 
 			elif code[idx] == '.':
@@ -148,31 +151,21 @@ class interpreter:
 
 			idx += 1
 
-	def cleanup(code):
+	def cleanup(self, code):
 		op = code.replace(' ', '')
 		for c in '\n\t\f\b\v':
 			op.replace(c, '')
-		return op
+		return [c for c in op]
 
-	def vanilla(code):
+	def vanilla(self, code):
 		for x in code:
 			if x not in [c for c in '+-.,><[]']:
 				return False
 		return True
 
-	def flush():
+	def flush(self):
 		self.memory = [None for x in range(30000)]
 		self.out = []
 
-	def new(code):
+	def new(self, code):
 		self.__init__(code)
-
-
-
-
-
-
-
-
-
-
